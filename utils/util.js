@@ -2,7 +2,7 @@
  * @Author: ink-song 229135518@qq.com
  * @Date: 2024-01-18 10:27:53
  * @LastEditors: ink-song 229135518@qq.com
- * @LastEditTime: 2024-01-18 10:55:51
+ * @LastEditTime: 2024-01-21 17:51:59
  * @FilePath: /manager-serve/utils/util.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@
  *
  */
 
-const log4js = require("log4js");
+const log4js = require("./log4");
 
 const CODE = {
   SUCCESS: 200,
@@ -25,7 +25,7 @@ const CODE = {
   AUTH_ERROR: 50001, // 认证失败或者TOKEN过期ss
 };
 
-moudle.exports = {
+module.exports = {
   pager({ pageNum = 1, pageSize = 10 }) {
     pageNum *= 1;
     pageSize *= 1;
@@ -54,4 +54,5 @@ moudle.exports = {
       msg,
     };
   },
+  CODE,
 };
