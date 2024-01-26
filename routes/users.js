@@ -2,7 +2,7 @@
  * @Author: ink-song 229135518@qq.com
  * @Date: 2024-01-19 11:46:59
  * @LastEditors: ink-song 229135518@qq.com
- * @LastEditTime: 2024-01-24 13:07:59
+ * @LastEditTime: 2024-01-25 23:33:32
  * @FilePath: /manager-serve/routes/users.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -108,7 +108,6 @@ router.post("/operate", async (ctx, next) => {
       ctx.body = util.fail("参数错误", util.CODE.PARA_ERROR);
       return;
     }
-    console.log("userEmail", userEmail);
     // 判断是否是重复用户
     const sameUser = await User.findOne(
       { $or: [{ userName }, { userEmail }] },
