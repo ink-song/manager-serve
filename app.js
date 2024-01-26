@@ -2,7 +2,7 @@
  * @Author: ink-song 229135518@qq.com
  * @Date: 2024-01-19 11:46:59
  * @LastEditors: ink-song 229135518@qq.com
- * @LastEditTime: 2024-01-25 23:34:38
+ * @LastEditTime: 2024-01-26 14:06:56
  * @FilePath: /manager-serve/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,6 +19,7 @@ const koaJwt = require("koa-jwt");
 const users = require("./routes/users");
 const menus = require("./routes/menus");
 const roles = require("./routes/roles");
+const depts = require("./routes/depts");
 
 onerror(app);
 
@@ -56,6 +57,7 @@ app.use(koaJwt({ secret: "ice" }).unless({ path: [/^\/api\/users\/login/] }));
 router.use(users.routes(), users.allowedMethods());
 router.use(menus.routes(), users.allowedMethods());
 router.use(roles.routes(), roles.allowedMethods());
+router.use(depts.routes(), depts.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
 
 // error-handling
