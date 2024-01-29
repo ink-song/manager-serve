@@ -2,13 +2,15 @@
  * @Author: ink-song 229135518@qq.com
  * @Date: 2024-01-19 11:46:59
  * @LastEditors: ink-song 229135518@qq.com
- * @LastEditTime: 2024-01-25 23:33:32
+ * @LastEditTime: 2024-01-29 16:03:42
  * @FilePath: /manager-serve/routes/users.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const router = require("koa-router")();
 const User = require("../models/userSchema");
 const util = require("../utils/util");
+const Menus = require("../models/menusSchema");
+const Roles = require("../models/rolesSchema");
 const jwt = require("jsonwebtoken");
 const Counter = require("../models/countersSchema");
 const md5 = require("md5");
@@ -16,10 +18,6 @@ const md5 = require("md5");
  * 用户管理模块
  */
 router.prefix("/users");
-
-router.get("/getPermissionList", async (ctx, next) => {
-  ctx.body = "quanxian";
-});
 
 // 用户的登录接口
 router.post("/login", async (ctx, next) => {
@@ -163,4 +161,51 @@ router.post("/operate", async (ctx, next) => {
   }
 });
 
+// 用户权限列表
+router.get("/getPermissionList", async (ctx, next) => {
+  // 通过解码token获取用户的角色
+  const { authorization } = ctx.request.headers;
+  if (authorization) {
+    const { data } = util.decode(authorization);
+    // 拿到用户信息以后,通过角色 => 查询相关的权限接口
+    // console.log("user =>", data);
+    const { _id, role, roleList } = data;
+    // 如果role === 0,那就是管理员,可以看到所有菜单
+    if (role === 0) {
+      const menuList = await Menus.find();
+      ctx.body = util.success(
+        {
+          menuList: util.treeMenu(menuList),
+          actionList: util.findKeys(util.treeMenu(menuList), "menuCode") || [],
+        },
+        "查询成功"
+      );
+    } else if (role === 1) {
+      // 普通用户,需要根据角色上面挂载的页面权限来进行动态设置
+      //先通过roleList查询对应的权限keys,再通过keys去查询对应的menus页面
+      const roleLists = await Roles.find({ _id: { $in: roleList } });
+      // 一个账户可能会有多个角色,所以需要遍历拿到checkedKeys和halfCheckedKeys,然后进行合并数组的去重
+      let role = [];
+      roleLists.forEach((i) =>
+        role.push(
+          ...i.permissionList.checkedKeys,
+          ...i.permissionList.halfCheckedKeys
+        )
+      );
+      const arr = role.reduce((cur, current) => {
+        const isExit = cur.find((i) => i === current);
+        if (!isExit) {
+          cur.push(current);
+        }
+        return cur;
+      }, []);
+      const permissionList = await Menus.find({ _id: { $in: arr } });
+      ctx.body = util.success({
+        menuList: util.treeMenu(permissionList),
+        actionList:
+          util.findKeys(util.treeMenu(permissionList), "menuCode") || [],
+      });
+    }
+  }
+});
 module.exports = router;

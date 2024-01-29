@@ -40,11 +40,15 @@ router.get("/list", async (ctx, next) => {
   // 根据参数查询数据
   try {
     const menus = await Menus.find(params);
-    console.log(menus, "=>");
+    console.log(
+      util.treeMenu(menus),
+      "=>>",
+      util.findKeys(util.treeMenu(menus), "menuCode")
+    );
     ctx.body = util.success(
       {
-        menuList: treeMenu(menus),
-        actionList: [],
+        menuList: util.treeMenu(menus),
+        actionList: util.findKeys(util.treeMenu(menus), "menuCode"),
       },
       "查询成功"
     );
@@ -53,20 +57,4 @@ router.get("/list", async (ctx, next) => {
   }
 });
 
-// 递归查询树结构
-/**
- * 要解决的问题是: 要将偏平的数据结构转换成树形结构. 以children作为装载的容器,判断依据是数据里面的当前id和parentId是否
- */
-const treeMenu = (arr, parentId = null) => {
-  return arr
-    .filter((item) =>
-      String(parentId) === String(item.parentId[item.parentId.length - 1])
-        ? item._doc
-        : null
-    )
-    .map((sitem) => ({
-      ...sitem._doc,
-      children: treeMenu(arr, sitem._id),
-    }));
-};
 module.exports = router;
