@@ -40,11 +40,6 @@ router.get("/list", async (ctx, next) => {
   // 根据参数查询数据
   try {
     const menus = await Menus.find(params);
-    console.log(
-      util.treeMenu(menus),
-      "=>>",
-      util.findKeys(util.treeMenu(menus), "menuCode")
-    );
     ctx.body = util.success(
       {
         menuList: util.treeMenu(menus),

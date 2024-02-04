@@ -2,7 +2,7 @@
  * @Author: ink-song 229135518@qq.com
  * @Date: 2024-01-19 11:46:59
  * @LastEditors: ink-song 229135518@qq.com
- * @LastEditTime: 2024-01-29 16:03:42
+ * @LastEditTime: 2024-02-02 21:54:06
  * @FilePath: /manager-serve/routes/users.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -43,6 +43,16 @@ router.post("/login", async (ctx, next) => {
   }
 });
 
+// 获取全量用户列表
+router.get("/all/list", async (ctx) => {
+  try {
+    const list = await User.find({}, "userId userName userEmail");
+    ctx.body = util.success(list);
+  } catch (error) {
+    ctx.body = util.fail(error.stack);
+  }
+});
+
 // 用户列表查询;
 router.get("/list", async (ctx, next) => {
   // 拿到request的请求参数
@@ -78,6 +88,7 @@ router.post("/delete", async (ctx) => {
   // 待删除的用户Id数组
   const { userIds } = ctx.request.body;
   const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 });
+  console.log("res=>", res);
   if (res.modifiedCount) {
     ctx.body = util.success(res, `共删除成功${res.modifiedCount}条`);
     return;

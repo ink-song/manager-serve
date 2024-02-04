@@ -27,6 +27,7 @@
   "devDependencies": {
     "log4js": "^6.9.1",
     "md5": "^2.3.0",
+    "moment": "^2.30.1",
     "nodemon": "^1.19.1"
   }
 }
