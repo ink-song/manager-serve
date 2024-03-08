@@ -11,7 +11,7 @@
  */
 const mongoose = require("mongoose");
 const congfig = require("./index");
-const logger = require("../utils/log4.js");
+const logger = require("../src/utils/log4.js");
 
 mongoose.connect(congfig.URL, {
   useNewUrlParser: true,
