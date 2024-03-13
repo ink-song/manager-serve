@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "serve": "./node_modules/.bin/nodemon index.js",
+    "serve": "./node_modules/.bin/nodemon bin/www",
     "prd": "pm2 start index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"

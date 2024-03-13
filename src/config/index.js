@@ -9,7 +9,7 @@
 // 配置文件
 module.exports = {
   // 远程alta数据库
-  URL: "mongodb+srv://yueseduomehao:Songbing521.@yueseduomehao.wahdh5k.mongodb.net/?retryWrites=true&w=majority&appName=yueseduomehao",
+  // URL: "mongodb+srv://yueseduomehao:Songbing521.@yueseduomehao.wahdh5k.mongodb.net/?retryWrites=true&w=majority&appName=yueseduomehao",
   // 本地启动的数据库 通过docker启动的
-  // URL: "mongodb://127.0.0.1:27017/test",
+  URL: "mongodb://127.0.0.1:27017/test",
 };

@@ -12,15 +12,15 @@ const views = require("koa-views");
 const json = require("koa-json");
 const onerror = require("koa-onerror");
 const bodyparser = require("koa-bodyparser");
-const log4js = require("./src/utils/log4");
+const log4js = require("./utils/log4");
 const router = require("koa-router")();
-const util = require("./src/utils/util");
+const util = require("./utils/util");
 const koaJwt = require("koa-jwt");
-const users = require("./src/routes/users");
-const menus = require("./src/routes/menus");
-const roles = require("./src/routes/roles");
-const depts = require("./src/routes/depts");
-const leaves_ = require("./src/routes/leaves");
+const users = require("./routes/users");
+const menus = require("./routes/menus");
+const roles = require("./routes/roles");
+const depts = require("./routes/depts");
+const leaves_ = require("./routes/leaves");
 
 onerror(app);
 
